@@ -97,6 +97,13 @@ setMethod(
             
    if(verbose) message("Reading the input file")
    input_file_path <- getBigWigFile(theObject)
+   
+   if(.Platform$OS.type == 'windows') {
+       warning("As of rtracklayer >= 1.37.6, BigWig is not supported on ",
+               "Windows. Thus loading data from BigWig files will most ",
+               "likely fail.", immediate. = TRUE)
+   }
+   
    input_bigWig_file <- import(input_file_path, format="BigWig")
    
    if(verbose) message("Subtracting input to experiment")
@@ -108,6 +115,13 @@ setMethod(
                    
                    message("\t Processing ", getExpName(exp))
                    message("\t\t Reading bigWig file")
+               }
+               
+               if(.Platform$OS.type == 'windows') {
+                   warning("As of rtracklayer >= 1.37.6, BigWig is not ",
+                           "supported on Windows. Thus loading data from ",
+                           "BigWig files will most likely fail.", 
+                           immediate. = TRUE)
                }
                
                exp_bigWig_file <- import(getBigWigFile(exp), format="BigWig")

@@ -78,6 +78,10 @@ type = "endo", verbose = TRUE, outputFolder = NULL)
   If outputFolder is not NULL, the original bigwig files should be copied to 
   this folder before performing the analysis. This parameter was created to 
   test the package with the provided files in extdata/.
+  
+  On Windows operating system, reading of BigWig files may fail due to the 
+  Bioconductor package rtracklayer >= 1.37.6 that does not support this file 
+  format.
 }
 
 \section{Methods (by class)}{

@@ -217,6 +217,12 @@ ChIPSeqSpikeDatasetBoost <- function(endogenousBam_vec, exogenousBam_vec,
     if(verbose)
         message("Reading input bigWig file.")
     
+    if(.Platform$OS.type == 'windows') {
+        warning("As of rtracklayer >= 1.37.6, BigWig is not supported on ",
+                "Windows. Thus loading data from BigWig files will most ",
+                "likely fail.", immediate. = TRUE)
+    }
+    
     loaded_input_bigWig <- import(inputBigWigFile, format="BigWig")
     
     loaded_exp_list <- mapply(function(endoB, exoB, target, name){
@@ -287,6 +293,12 @@ ExperimentLoaded <- function(endogenousBamFilePath, exogenousBamFilePath,
     
     if(verbose)
         message("Reading ", name)
+    
+    if(.Platform$OS.type == 'windows') {
+        warning("As of rtracklayer >= 1.37.6, BigWig is not supported on ",
+                "Windows. Thus loading data from BigWig files will most ",
+                "likely fail.", immediate. = TRUE)
+    }
     
     loaded_bigWig <- import(bigWigFilePath, format="BigWig")
     

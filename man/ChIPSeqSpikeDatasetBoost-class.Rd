@@ -130,6 +130,10 @@ ChIPSeqSpikeDatasetListBoost) can also be considered to speed up the analysis.
 
 'exportBigWigs' output the binding values from the GRanges objects contained in
  inputBigWigLoaded and experimentListLoaded slots. 
+ 
+On Windows operating system, reading of BigWig files may fail due to the 
+Bioconductor package rtracklayer >= 1.37.6 that does not support this file 
+format.
 }
 
 

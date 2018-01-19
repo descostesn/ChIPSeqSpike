@@ -47,6 +47,11 @@ ChIPSeqSpike will be of great value to the genomics community.
 
 
 # Standard workflow
+## Note for Windows users
+On Windows operating system, reading of BigWig files may fail due to the 
+Bioconductor package [rtracklayer >= 1.37.6](https://bioconductor.org/packages/release/bioc/html/rtracklayer.html) 
+that does not support this file format.
+
 ## Quick start
 A case study reported Chromatin Immuno-Precipitation followed by Sequencing 
 (ChIP-Seq) experiments that did not show differences upon inhibitor treatment 

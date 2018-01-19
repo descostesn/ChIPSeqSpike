@@ -56,6 +56,10 @@ verbose = TRUE)
   If not in boost mode, the input DNA subtracted bigwig files are written to 
   the folder containing the currently processed bigwig files. In boost mode, 
   use the method exportBigWigs to output the transformed files. 
+  
+  On Windows operating system, reading of BigWig files may fail due to the 
+  Bioconductor package rtracklayer >= 1.37.6 that does not support this file 
+  format.
 }
 
 \section{Methods (by class)}{

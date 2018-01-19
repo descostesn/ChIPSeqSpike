@@ -115,6 +115,11 @@
   }
 }
 
+\section{Details}{On Windows operating system, reading of BigWig files may fail
+ due to the Bioconductor package rtracklayer >= 1.37.6 that does not support 
+ this file format.
+}
+
 \examples{
 
 file_vec <- system.file("extdata", 
