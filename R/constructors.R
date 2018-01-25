@@ -56,7 +56,13 @@ spikeDataset <- function(infoFile, bamPath, bigWigPath, boost = FALSE,
         if(!isTRUE(all.equal(length(unique(info_table$bigWigInput)), 1)))
             stop("The input bam and bigWig files do not correspond.")
         
-        if(boost)
+        if(boost){
+            if(.Platform$OS.type == 'windows') {
+                warning("As of rtracklayer >= 1.37.6, BigWig is not ",
+                        "supported on Windows.", immediate. = TRUE)
+                return()
+            }
+            
             ChIPSeqSpikeDatasetBoost(info_table$endogenousBam, 
                     info_table$exogenousBam, 
                     info_table$bigWigEndogenous, 
@@ -64,7 +70,7 @@ spikeDataset <- function(infoFile, bamPath, bigWigPath, boost = FALSE,
                     unique(inputBamFile), 
                     info_table$expName,
                     verbose)
-        else
+        }else
             ChIPSeqSpikeDataset(info_table$endogenousBam, 
                     info_table$exogenousBam, 
                     info_table$bigWigEndogenous, 
@@ -78,9 +84,14 @@ spikeDataset <- function(infoFile, bamPath, bigWigPath, boost = FALSE,
         names(list_dataset) <- paste0("dataset", 
                                       seq_len(length(list_dataset)))
         
-        if(boost)
+        if(boost){
+            if(.Platform$OS.type == 'windows') {
+                warning("As of rtracklayer >= 1.37.6, BigWig is not ",
+                        "supported on Windows.", immediate. = TRUE)
+                return()
+            }
             ChIPSeqSpikeDatasetListBoost(list_dataset, verbose)
-        else
+        }else
             ChIPSeqSpikeDatasetList(list_dataset, verbose)
     }
 }
