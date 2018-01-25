@@ -70,7 +70,7 @@ unlink("test_chipseqspike/", recursive = TRUE)
     \code{\link{plotProfile}}
     \code{\link{plotTransform}}
     \code{\link{plotHeatmaps}}
-    \code{\link[seqplots]{PlotSetArray}}
+    \code{\link[seqplots]{PlotSetArray-class}}
 }
 
 \author{Nicolas Descostes}

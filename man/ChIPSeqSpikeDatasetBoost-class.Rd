@@ -161,7 +161,7 @@ csds
   \code{\link{ChIPSeqSpikeCore-class}}
   \code{\link{ChIPSeqSpikeDatasetListBoost-class}}
   \code{\link{spikeDataset}}
-  \code{\link[seqplots]{PlotSetArray}}
+  \code{\link[seqplots]{PlotSetArray-class}}
   \code{\link{spikeSummary}}
   \code{\link{getRatio}}
 }

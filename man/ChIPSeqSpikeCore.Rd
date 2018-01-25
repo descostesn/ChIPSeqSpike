@@ -116,7 +116,7 @@ by calling the function 'BWGFile_summary' of the bioconductor package
   \code{\link{ChIPSeqSpikeDatasetBoost-class}}
   \code{\link{ChIPSeqSpikeDataset-class}}
   \code{\link{spikeDataset}}
-  \code{\link[seqplots]{PlotSetArray}}
+  \code{\link[seqplots]{PlotSetArray-class}}
 }
 
 \author{Nicolas Descostes}
