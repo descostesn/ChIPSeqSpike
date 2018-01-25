@@ -5,6 +5,11 @@ spikePipe <- function(infoFile, bamPath, bigWigPath, anno, genome_version,
                 ignore_strand = FALSE, verbose = FALSE, boost = FALSE, 
                 outputFolder = NULL){
             
+            if(.Platform$OS.type == 'windows') {
+                warning("As of rtracklayer >= 1.37.6, BigWig is not ",
+                        "supported on Windows.", immediate. = TRUE)
+                return()
+            }
             
             csds <- spikeDataset(infoFile, bamPath, bigWigPath, boost, 
                     verbose)
