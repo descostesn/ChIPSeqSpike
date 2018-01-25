@@ -115,9 +115,8 @@
   }
 }
 
-\section{Details}{On Windows operating system, reading of BigWig files may fail
- due to the Bioconductor package rtracklayer >= 1.37.6 that does not support 
- this file format.
+\section{Details}{On Windows operating system, due to the Bioconductor package 
+rtracklayer >= 1.37.6 not supporting bigWig files, this class is not available.
 }
 
 \examples{

@@ -100,8 +100,8 @@ setMethod(
    
    if(.Platform$OS.type == 'windows') {
        warning("As of rtracklayer >= 1.37.6, BigWig is not supported on ",
-               "Windows. Thus loading data from BigWig files will most ",
-               "likely fail.", immediate. = TRUE)
+               "Windows.", immediate. = TRUE)
+       return()
    }
    
    input_bigWig_file <- import(input_file_path, format="BigWig")
@@ -119,9 +119,8 @@ setMethod(
                
                if(.Platform$OS.type == 'windows') {
                    warning("As of rtracklayer >= 1.37.6, BigWig is not ",
-                           "supported on Windows. Thus loading data from ",
-                           "BigWig files will most likely fail.", 
-                           immediate. = TRUE)
+                           "supported on Windows.", immediate. = TRUE)
+                   return()
                }
                
                exp_bigWig_file <- import(getBigWigFile(exp), format="BigWig")

@@ -79,9 +79,8 @@ type = "endo", verbose = TRUE, outputFolder = NULL)
   this folder before performing the analysis. This parameter was created to 
   test the package with the provided files in extdata/.
   
-  On Windows operating system, reading of BigWig files may fail due to the 
-  Bioconductor package rtracklayer >= 1.37.6 that does not support this file 
-  format.
+  On Windows operating system, due to the Bioconductor package rtracklayer >= 
+  1.37.6 not supporting bigWig files, this method is not available.
 }
 
 \section{Methods (by class)}{

@@ -1,3 +1,7 @@
+########## version 0.99.9:
+
+Add return() instructions if the used operating system is Windows.
+
 ########## version 0.99.7:
 
 Add warning for Windows user regarding possible problems reading BigWig files 

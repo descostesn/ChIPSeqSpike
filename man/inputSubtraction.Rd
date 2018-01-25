@@ -57,9 +57,8 @@ verbose = TRUE)
   the folder containing the currently processed bigwig files. In boost mode, 
   use the method exportBigWigs to output the transformed files. 
   
-  On Windows operating system, reading of BigWig files may fail due to the 
-  Bioconductor package rtracklayer >= 1.37.6 that does not support this file 
-  format.
+  On Windows operating system, due to the Bioconductor package rtracklayer >= 
+  1.37.6 not supporting bigWig files, this method is not available.
 }
 
 \section{Methods (by class)}{
