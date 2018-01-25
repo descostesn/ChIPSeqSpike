@@ -50,6 +50,12 @@ setMethod(
         
         definition = function(theObject, verbose = TRUE){
             
+            if(.Platform$OS.type == 'windows') {
+                warning("As of rtracklayer >= 1.37.6, BigWig is not supported",
+                        " on Windows.", immediate. = TRUE)
+                return()
+            }
+            
             if(!length(grep("RPM", getBigWigFile(theObject))))
       stop("RPM normalization must be performed before subtracting the input")
             
@@ -92,17 +98,17 @@ setMethod(
         
         definition = function(theObject, verbose = TRUE){
             
-    if(!length(grep("RPM", getBigWigFile(theObject))))
-      stop("RPM normalization must be performed before subtracting the input")
-            
-   if(verbose) message("Reading the input file")
-   input_file_path <- getBigWigFile(theObject)
-   
    if(.Platform$OS.type == 'windows') {
        warning("As of rtracklayer >= 1.37.6, BigWig is not supported on ",
                "Windows.", immediate. = TRUE)
        return()
    }
+            
+   if(!length(grep("RPM", getBigWigFile(theObject))))
+      stop("RPM normalization must be performed before subtracting the input")
+            
+   if(verbose) message("Reading the input file")
+   input_file_path <- getBigWigFile(theObject)
    
    input_bigWig_file <- import(input_file_path, format="BigWig")
    
@@ -115,12 +121,6 @@ setMethod(
                    
                    message("\t Processing ", getExpName(exp))
                    message("\t\t Reading bigWig file")
-               }
-               
-               if(.Platform$OS.type == 'windows') {
-                   warning("As of rtracklayer >= 1.37.6, BigWig is not ",
-                           "supported on Windows.", immediate. = TRUE)
-                   return()
                }
                
                exp_bigWig_file <- import(getBigWigFile(exp), format="BigWig")
@@ -166,6 +166,11 @@ setMethod(
         
         definition = function(theObject, verbose = TRUE){
             
+       if(.Platform$OS.type == 'windows') {
+            warning("As of rtracklayer >= 1.37.6, BigWig is not supported on ",
+                    "Windows.", immediate. = TRUE)
+            return()
+       }
             .loadInputSubtractionList(theObject, verbose)
         }
 )
@@ -178,6 +183,12 @@ setMethod(
         signature = "ChIPSeqSpikeDatasetListBoost",
         
         definition = function(theObject, verbose = TRUE){
+            
+            if(.Platform$OS.type == 'windows') {
+                warning("As of rtracklayer >= 1.37.6, BigWig is not supported",
+                        " on Windows.", immediate. = TRUE)
+                return()
+            }
             
             .loadInputSubtractionList(theObject, verbose)
         }

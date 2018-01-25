@@ -102,6 +102,12 @@ spikeDataset <- function(infoFile, bamPath, bigWigPath, boost = FALSE,
 
 ChIPSeqSpikeDatasetListBoost <- function(dataset_list, verbose){
     
+    if(.Platform$OS.type == 'windows') {
+        warning("As of rtracklayer >= 1.37.6, BigWig is not ",
+                "supported on Windows.", immediate. = TRUE)
+        return()
+    }
+    
     ChIPSeqSpikeDatasetBoostCollection <- lapply(dataset_list, 
             function(dataset_table){
                 
@@ -222,17 +228,17 @@ ChIPSeqSpikeDatasetBoost <- function(endogenousBam_vec, exogenousBam_vec,
         inputSF = 0, inputNb = 0, SetArrayList = list(), 
         matBindingList = list(), verbose = TRUE){
     
-    .verifyDataset(endogenousBam_vec, exogenousBam_vec, 
-            bigWigFile_endogenous_vec, expnames)
-    
-    if(verbose)
-        message("Reading input bigWig file.")
-    
     if(.Platform$OS.type == 'windows') {
         warning("As of rtracklayer >= 1.37.6, BigWig is not supported on ",
                 "Windows.", immediate. = TRUE)
         return()
     }
+    
+    .verifyDataset(endogenousBam_vec, exogenousBam_vec, 
+            bigWigFile_endogenous_vec, expnames)
+    
+    if(verbose)
+        message("Reading input bigWig file.")
     
     loaded_input_bigWig <- import(inputBigWigFile, format="BigWig")
     
@@ -302,14 +308,14 @@ ExperimentLoaded <- function(endogenousBamFilePath, exogenousBamFilePath,
         bigWigFilePath, name, endoScalingFactor = 0, exoScalingFactor = 0, 
         endoNb = 0, exoNb = 0, verbose = TRUE){
     
-    if(verbose)
-        message("Reading ", name)
-    
     if(.Platform$OS.type == 'windows') {
-        warning("As of rtracklayer >= 1.37.6, BigWig is not supported on ",
-                "Windows.", immediate. = TRUE)
+        warning("As of rtracklayer >= 1.37.6, BigWig is not ",
+                "supported on Windows.", immediate. = TRUE)
         return()
     }
+    
+    if(verbose)
+        message("Reading ", name)
     
     loaded_bigWig <- import(bigWigFilePath, format="BigWig")
     

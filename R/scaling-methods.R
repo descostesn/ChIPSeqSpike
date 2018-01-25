@@ -70,12 +70,6 @@
     
     if(verbose) message("\t Reading experiment bigWig file.")
     
-    if(.Platform$OS.type == 'windows') {
-        warning("As of rtracklayer >= 1.37.6, BigWig is not supported on ",
-                "Windows.", immediate. = TRUE)
-        return()
-    }
-    
     bigWig_file <- import(getBigWigFile(object), format="BigWig")
     
     if(reverse)
@@ -129,6 +123,12 @@ setMethod(
         definition = function(theObject, reverse = FALSE, type = "endo",
                 verbose = TRUE, outputFolder = NULL){
             
+            if(.Platform$OS.type == 'windows') {
+                warning("As of rtracklayer >= 1.37.6, BigWig is not ",
+                        "supported on Windows.", immediate. = TRUE)
+                return()
+            }
+            
             .validateParameters(type, reverse, outputFolder)
             
             if(!reverse && isTRUE(all.equal(type, "endo"))){
@@ -166,6 +166,12 @@ setMethod(
         
         definition = function(theObject, reverse = FALSE, type = "endo",
                 verbose = TRUE, outputFolder = NULL){
+            
+            if(.Platform$OS.type == 'windows') {
+                warning("As of rtracklayer >= 1.37.6, BigWig is not ",
+                        "supported on Windows.", immediate. = TRUE)
+                return()
+            }
             
             .validateParameters(type, reverse)
             
@@ -229,6 +235,12 @@ setMethod(
         definition = function(theObject, reverse = FALSE, type = "endo",
                 verbose = TRUE, outputFolder = NULL){
             
+            if(.Platform$OS.type == 'windows') {
+                warning("As of rtracklayer >= 1.37.6, BigWig is not ",
+                        "supported on Windows.", immediate. = TRUE)
+                return()
+            }
+            
             .loadScalingOnList(theObject, reverse, type, verbose, 
                     outputFolder)
         }
@@ -243,6 +255,12 @@ setMethod(
         
         definition = function(theObject, reverse = FALSE, type = "endo",
                 verbose = TRUE, outputFolder = NULL){
+            
+            if(.Platform$OS.type == 'windows') {
+                warning("As of rtracklayer >= 1.37.6, BigWig is not ",
+                        "supported on Windows.", immediate. = TRUE)
+                return()
+            }
             
             .loadScalingOnList(theObject, reverse, type, verbose, 
                     outputFolder)
