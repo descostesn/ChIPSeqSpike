@@ -55,9 +55,11 @@ result <- file.copy(bigwig_files, "test_chipseqspike")
 csds <- spikePipe(info_file_csv, bam_path, bigwig_path, gff_vec, genome_name, 
               verbose = TRUE, outputFolder = output_folder)
 
-getExoCount(csds[[1]][[1]])
-exoCount(csds[[1]][[1]]) <- 5
-getExoCount(csds[[1]][[1]])
+if(.Platform$OS.type != 'windows') {
+    getExoCount(csds[[1]][[1]])
+    exoCount(csds[[1]][[1]]) <- 5
+    getExoCount(csds[[1]][[1]])
+}
 
 unlink("test_chipseqspike/", recursive = TRUE)
 }

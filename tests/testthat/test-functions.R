@@ -68,28 +68,31 @@ context("Testing scaling and .computeScaling")
 
 test_that("All parameters are valid", {
             
-            expect_error(scaling(csds, outputFolder = "/toto/"), 
-                    "The specified output folder does not exist.")
-            
-            expect_error(scaling(csds, outputFolder = "./"), 
-                    "The path to the output folder should not end by '/'")
-            
-            expect_error(scaling(csds, type = "toto"), 
-                    "Accepted types are endo and exo.")
-            
-            expect_error(scaling(csds, reverse = TRUE, type = "exo"), 
-                    "Exogenous scaling factor cannot be reverted.")
-            
-            expect_error(scaling(csds, reverse = TRUE), 
-                    "RPM normalization must be performed before reverting it")
-            
-            expect_error(scaling(csds2, reverse = TRUE), 
-                    paste0("Input subtraction should be performed before ", 
-                            "reverting RPM normalization"))
-            
-            expect_error(scaling(csds, type = "exo"),
-                    paste0("Exogenous scaling factor should be applied when ",
-                            "RPM normalization has been reverted."))
+            if(.Platform$OS.type != 'windows') {
+                
+                expect_error(scaling(csds, outputFolder = "/toto/"),
+                        "The specified output folder does not exist.")
+                
+                expect_error(scaling(csds, outputFolder = "./"),
+                        "The path to the output folder should not end by '/'")
+                
+                expect_error(scaling(csds, type = "toto"),
+                        "Accepted types are endo and exo.")
+                
+                expect_error(scaling(csds, reverse = TRUE, type = "exo"),
+                        "Exogenous scaling factor cannot be reverted.")
+                
+                expect_error(scaling(csds, reverse = TRUE),
+                     "RPM normalization must be performed before reverting it")
+                
+                expect_error(scaling(csds2, reverse = TRUE),
+                        paste0("Input subtraction should be performed before ",
+                                "reverting RPM normalization"))
+                
+                expect_error(scaling(csds, type = "exo"),
+                        paste0("Exogenous scaling factor should be applied ",
+                                "when RPM normalization has been reverted."))
+            }
         })
 
 
@@ -99,8 +102,11 @@ context("Testing inputSubtraction")
 
 test_that("Invalid data and differing number of chromosomes is not permitted", {
             
-            expect_error(inputSubtraction(csds), paste0("RPM normalization must"
-                                    ," be performed before subtracting the ",
-                                    "input"))
+            if(.Platform$OS.type != 'windows') {
+                
+                expect_error(inputSubtraction(csds), 
+                        paste0("RPM normalization must be performed before ",
+                                "subtracting the input"))
+            }
         })
 

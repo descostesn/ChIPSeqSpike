@@ -80,9 +80,11 @@ result <- file.copy(bigwig_files, "test_chipseqspike")
 csds <- spikePipe(info_file_csv, bam_path, bigwig_path, gff_vec, genome_name, 
               verbose = TRUE, outputFolder = output_folder)
 
-getScalingFactor(csds[[1]][[1]])
-scalingFactor(csds[[1]][[1]]) <- 15
-getScalingFactor(csds[[1]][[1]])
+if(.Platform$OS.type != 'windows') {
+    getScalingFactor(csds[[1]][[1]])
+    scalingFactor(csds[[1]][[1]]) <- 15
+    getScalingFactor(csds[[1]][[1]])
+}
 
 unlink("test_chipseqspike/", recursive = TRUE)
 }

@@ -57,9 +57,11 @@ result <- file.copy(bigwig_files, "test_chipseqspike")
 
 csds <- spikePipe(info_file_csv, bam_path, bigwig_path, gff_vec, genome_name, 
               verbose = TRUE, outputFolder = output_folder)
-
-test <- getAverageBindingValues(csds[[1]])
-averageBindingValues(csds[[1]]) <- test
+              
+if(.Platform$OS.type != 'windows') {
+    test <- getAverageBindingValues(csds[[1]])
+    averageBindingValues(csds[[1]]) <- test
+}
 
 unlink("test_chipseqspike/", recursive = TRUE)
 }

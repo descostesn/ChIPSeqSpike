@@ -58,17 +58,20 @@ test_that("Accessors of Experiment object are valid", {
             expect_equal(getExoCount(e), 4)
         })
 
-test_that("Accessors of ExperimentLoaded object are valid", {
-            
-            expect_equal(getBam(eboost), file_vec[2])
-            expect_equal(getExogenousBam(eboost), file_vec[1])
-            expect_equal(getBigWigFile(eboost), file_vec[3])
-            expect_equal(getExpName(eboost), "H3K79me2_0")
-            expect_equal(getScalingFactor(eboost), 1)
-            expect_equal(getExogenousScalingFactor(eboost), 2)
-            expect_equal(getCount(eboost), 3)
-            expect_equal(getExoCount(eboost), 4)
-        })
+if(.Platform$OS.type != 'windows') {
+    
+    test_that("Accessors of ExperimentLoaded object are valid", {
+                
+                expect_equal(getBam(eboost), file_vec[2])
+                expect_equal(getExogenousBam(eboost), file_vec[1])
+                expect_equal(getBigWigFile(eboost), file_vec[3])
+                expect_equal(getExpName(eboost), "H3K79me2_0")
+                expect_equal(getScalingFactor(eboost), 1)
+                expect_equal(getExogenousScalingFactor(eboost), 2)
+                expect_equal(getCount(eboost), 3)
+                expect_equal(getExoCount(eboost), 4)
+            })
+}
 
 test_that("Accessors to ChIPSeqSpikeDataset are valid", {
             
@@ -83,15 +86,17 @@ test_that("Accessors to ChIPSeqSpikeDataset are valid", {
             suppressWarnings(expect_equal(getRatio(csds), ratiotest))
         })
 
-test_that("Accessors to ChIPSeqSpikeDatasetBoost are valid", {
-            
-            expect_equal(getBam(csdsboost), file_vec[5])
-            expect_equal(getBigWigFile(csdsboost), file_vec[4])
-            expect_equal(as.character(getExperimentListBigWigs(csdsboost)), 
-                    file_vec[3])
-            expect_equal(getExpName(csdsboost), "H3K79me2_0")
-            expect_equal(getScalingFactor(csdsboost), 0.7)
-            expect_equal(getCount(csdsboost), 1000)
-            expect_equal(spikeSummary(csdsboost), spikesumtest)
-            suppressWarnings(expect_equal(getRatio(csds), ratiotest))
-        })
+if(.Platform$OS.type != 'windows') {
+    test_that("Accessors to ChIPSeqSpikeDatasetBoost are valid", {
+                
+                expect_equal(getBam(csdsboost), file_vec[5])
+                expect_equal(getBigWigFile(csdsboost), file_vec[4])
+                expect_equal(as.character(getExperimentListBigWigs(csdsboost)), 
+                        file_vec[3])
+                expect_equal(getExpName(csdsboost), "H3K79me2_0")
+                expect_equal(getScalingFactor(csdsboost), 0.7)
+                expect_equal(getCount(csdsboost), 1000)
+                expect_equal(spikeSummary(csdsboost), spikesumtest)
+                suppressWarnings(expect_equal(getRatio(csds), ratiotest))
+            })
+}

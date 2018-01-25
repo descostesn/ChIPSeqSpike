@@ -74,10 +74,12 @@ result <- file.copy(bigwig_files, "test_chipseqspike")
 csds <- spikePipe(info_file_csv, bam_path, bigwig_path, gff_vec, genome_name, 
               verbose = TRUE, outputFolder = output_folder)
 
-write("toto", file="./test_chipseqspike/toto.bw")
-getBigWigFile(csds[[1]][[1]])
-bigWigFile(csds[[1]][[1]]) <- "test_chipseqspike/toto.bw"
-getBigWigFile(csds[[1]][[1]])
+if(.Platform$OS.type != 'windows') {
+    write("toto", file="./test_chipseqspike/toto.bw")
+    getBigWigFile(csds[[1]][[1]])
+    bigWigFile(csds[[1]][[1]]) <- "test_chipseqspike/toto.bw"
+    getBigWigFile(csds[[1]][[1]])
+}
 
 unlink("test_chipseqspike/", recursive = TRUE)
 }

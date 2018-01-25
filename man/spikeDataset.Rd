@@ -78,10 +78,13 @@ is(csds)
 csds
 
 ## Returns ChIPSeqSpikeDatasetListBoost
-csds <- spikeDataset(infoFile = info_file_csv, bamPath = bam_path, 
-                     bigWigPath = bigwig_path, boost = TRUE)
-is(csds)
-csds
+
+if(.Platform$OS.type != 'windows') {
+    csds <- spikeDataset(infoFile = info_file_csv, bamPath = bam_path, 
+                         bigWigPath = bigwig_path, boost = TRUE)
+    is(csds)
+    csds
+}
 }
 
 \seealso{

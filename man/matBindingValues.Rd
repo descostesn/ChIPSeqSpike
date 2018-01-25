@@ -59,8 +59,10 @@ result <- file.copy(bigwig_files, "test_chipseqspike")
 csds <- spikePipe(info_file_csv, bam_path, bigwig_path, gff_vec, genome_name, 
               verbose = FALSE, outputFolder = output_folder)
 
-new_list <- list(matrix(seq_len(10)), matrix(2:18))
-matBindingValues(csds[[1]]) <- new_list
+if(.Platform$OS.type != 'windows') {
+    new_list <- list(matrix(seq_len(10)), matrix(2:18))
+    matBindingValues(csds[[1]]) <- new_list
+}
 
 unlink("test_chipseqspike/", recursive = TRUE)
 }

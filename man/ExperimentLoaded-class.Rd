@@ -39,9 +39,11 @@
 \section{Constructor}{
   \describe{
 
+if(.Platform$OS.type != 'windows') {
     ExperimentLoaded(endogenousBamFilePath, exogenousBamFilePath, 
         bigWigFilePath, name, endoScalingFactor = 0, exoScalingFactor = 0, 
         endoNb = 0, exoNb = 0, verbose = TRUE)
+}
   }
 }
 

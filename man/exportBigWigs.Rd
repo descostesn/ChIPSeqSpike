@@ -63,19 +63,21 @@ csds <- spikeDataset(infoFile = info_file_csv, bamPath = bam_path,
 ## Creating test folder
 dir.create("./test_chipseqspike")
 
-csds <- estimateScalingFactors(csds)
+if(.Platform$OS.type != 'windows') {
+    csds <- estimateScalingFactors(csds)
 
-## Apply RPM scaling
-csds <- scaling(csds, outputFolder = "test_chipseqspike")
+    ## Apply RPM scaling
+    csds <- scaling(csds, outputFolder = "test_chipseqspike")
 
-## output RPM scaled files
-exportBigWigs(csds)
+    ## output RPM scaled files
+    exportBigWigs(csds)
 
-## Apply input subtraction
-csds <- inputSubtraction(csds)
+    ## Apply input subtraction
+    csds <- inputSubtraction(csds)
 
-## output input subtracted files
-exportBigWigs(csds)
+    ## output input subtracted files
+    exportBigWigs(csds)
+}
 
 ## Delete all files generated in this example
 unlink("test_chipseqspike/", recursive = TRUE)

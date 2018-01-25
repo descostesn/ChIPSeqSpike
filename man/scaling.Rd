@@ -116,17 +116,19 @@ result <- file.copy(originalBW_vec, "test_chipseqspike")
 
 csds <- estimateScalingFactors(csds)
 
-## Apply RPM scaling
-csds <- scaling(csds, outputFolder = "test_chipseqspike")
+if(.Platform$OS.type != 'windows') {
+    ## Apply RPM scaling
+    csds <- scaling(csds, outputFolder = "test_chipseqspike")
 
-## Apply input subtraction
-csds <- inputSubtraction(csds)
+    ## Apply input subtraction
+    csds <- inputSubtraction(csds)
 
-## Reverse RPM scaling after input subtraction
-csds <- scaling(csds, reverse = TRUE)
+    ## Reverse RPM scaling after input subtraction
+    csds <- scaling(csds, reverse = TRUE)
 
-## Apply exogenous scaling factors
-csds <- scaling(csds, type = "exo")
+    ## Apply exogenous scaling factors
+    csds <- scaling(csds, type = "exo")
+}
 
 ## Delete all files generated in this example
 unlink("test_chipseqspike/", recursive = TRUE)

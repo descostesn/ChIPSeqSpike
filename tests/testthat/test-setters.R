@@ -117,65 +117,67 @@ test_that("The list of matrices is modified correctly", {
 
 ## For ChIPSeqSpikeDatasetBoost object
 
-context("Scaling factors of ChIPSeqSpikeDatasetBoost objects are changed 
-        correctly.")
+if(.Platform$OS.type != 'windows') {
 
-test_that("Negative value cannot be given as scaling factor or count", {
-            
-            expect_error(scalingFactor(csdsboost) <- -2, 
-                    "object@inputScalingFactor should be a positive number or 0.")
-            
-            expect_error(count(csdsboost) <- -2,
-                    "object@inputCount should be a positive number or 0.")
-            
-        })
-
-
-test_that("Non numeric value is not accepted as scaling factor or count",{
-            
-            expect_error(scalingFactor(csdsboost) <- "toto", 
-                    "Scaling factor should be numeric.")
-            
-            expect_error(count(csdsboost) <- "toto", 
-                    "Counts should be numeric.")
-            
-        })
-
-
-
-test_that("Slot is correctly modified if a valid score is given", {
-            
-            scalingFactor(csdsboost) <- 1
-            count(csdsboost) <- 3
-            
-            expect_equal(getScalingFactor(csdsboost), 1)
-            expect_equal(getCount(csdsboost), 3)
-            
-        })
-
-
-test_that("The input bigwig file is modified correctly", {
-            
-            bigWigFile(csdsboost) <- file_vec[4]
-            
-            expect_equal(getBigWigFile(csdsboost), file_vec[4])
-            
-        })
-
-
-test_that("The plotSetArrayList is modified correctly",{
-            
-            expect_error(averageBindingValues(csdsboost) <- 3, 
-                    "SetArrayList should be of type list.")
-            
-            expect_error(averageBindingValues(csdsboost) <- list(), 
-                    "The list of binding values is empty.")
-            
-            expect_error(averageBindingValues(csdsboost) <- list(c(1,2)), 
-                    "All objects in setArray list must be of type PlotSetArray.")
-            
-        })
-
+    context("Scaling factors of ChIPSeqSpikeDatasetBoost objects are changed 
+                    correctly.")
+    
+    test_that("Negative value cannot be given as scaling factor or count", {
+                
+                expect_error(scalingFactor(csdsboost) <- -2, 
+                 "object@inputScalingFactor should be a positive number or 0.")
+                
+                expect_error(count(csdsboost) <- -2,
+                        "object@inputCount should be a positive number or 0.")
+                
+            })
+    
+    
+    test_that("Non numeric value is not accepted as scaling factor or count",{
+                
+                expect_error(scalingFactor(csdsboost) <- "toto", 
+                        "Scaling factor should be numeric.")
+                
+                expect_error(count(csdsboost) <- "toto", 
+                        "Counts should be numeric.")
+                
+            })
+    
+    
+    
+    test_that("Slot is correctly modified if a valid score is given", {
+                
+                scalingFactor(csdsboost) <- 1
+                count(csdsboost) <- 3
+                
+                expect_equal(getScalingFactor(csdsboost), 1)
+                expect_equal(getCount(csdsboost), 3)
+                
+            })
+    
+    
+    test_that("The input bigwig file is modified correctly", {
+                
+                bigWigFile(csdsboost) <- file_vec[4]
+                
+                expect_equal(getBigWigFile(csdsboost), file_vec[4])
+                
+            })
+    
+    
+    test_that("The plotSetArrayList is modified correctly",{
+                
+                expect_error(averageBindingValues(csdsboost) <- 3, 
+                        "SetArrayList should be of type list.")
+                
+                expect_error(averageBindingValues(csdsboost) <- list(), 
+                        "The list of binding values is empty.")
+                
+                expect_error(averageBindingValues(csdsboost) <- list(c(1,2)), 
+                        "All objects in setArray list must be of type PlotSetArray.")
+                
+            })
+}
 
 test_that("The list of matrices is modified correctly", {
             
@@ -258,57 +260,59 @@ test_that("The bigwig file is modified correctly", {
 
 context("Scaling factors of Experiment objects are changed correctly.")
 
-test_that("Negative value cannot be given as scaling factor or count", {
-            
-            expect_error(scalingFactor(eboost) <- -2, 
-                    "object@endogenousScalingFactor should be a positive number or 0")
-            
-            expect_error(exogenousScalingFactor(eboost) <- -2, 
-                    "object@exogenousScalingFactor should be a positive number or 0")
-            
-            expect_error(count(eboost) <- -2, 
-                    "object@endoCount should be a positive number or 0")
-            
-            expect_error(exoCount(eboost) <- -2, 
-                    "object@exoCount should be a positive number or 0")
-            
-        })
-
-test_that("Non numeric value is not accepted as scaling factor or count",{
-            
-            expect_error(scalingFactor(eboost) <- "toto", 
-                    "Scaling factor should be numeric.")
-            
-            expect_error(exogenousScalingFactor(eboost) <- "toto", 
-                    "Scaling factor should be numeric.")
-            
-            expect_error(count(eboost) <- "toto", 
-                    "Counts should be numeric.")
-            
-            expect_error(exoCount(eboost) <- "toto", 
-                    "Counts should be numeric.")
-        })
-
-
-test_that("Slot is correctly modified if a valid score is given", {
-            
-            scalingFactor(eboost) <- 1
-            exogenousScalingFactor(eboost) <- 2
-            count(eboost) <- 3
-            exoCount(eboost) <- 4
-            
-            expect_equal(getScalingFactor(eboost), 1)
-            expect_equal(getExogenousScalingFactor(eboost), 2)
-            expect_equal(getCount(eboost), 3)
-            expect_equal(getExoCount(eboost), 4)
-            
-        })
-
-
-test_that("The bigwig file is modified correctly", {
-            
-            bigWigFile(eboost) <- file_vec[3]
-            
-            expect_equal(getBigWigFile(eboost), file_vec[3])
-            
-        })
+if(.Platform$OS.type != 'windows') {
+    test_that("Negative value cannot be given as scaling factor or count", {
+                
+                expect_error(scalingFactor(eboost) <- -2, 
+             "object@endogenousScalingFactor should be a positive number or 0")
+                
+                expect_error(exogenousScalingFactor(eboost) <- -2, 
+              "object@exogenousScalingFactor should be a positive number or 0")
+                
+                expect_error(count(eboost) <- -2, 
+                        "object@endoCount should be a positive number or 0")
+                
+                expect_error(exoCount(eboost) <- -2, 
+                        "object@exoCount should be a positive number or 0")
+                
+            })
+    
+    test_that("Non numeric value is not accepted as scaling factor or count",{
+                
+                expect_error(scalingFactor(eboost) <- "toto", 
+                        "Scaling factor should be numeric.")
+                
+                expect_error(exogenousScalingFactor(eboost) <- "toto", 
+                        "Scaling factor should be numeric.")
+                
+                expect_error(count(eboost) <- "toto", 
+                        "Counts should be numeric.")
+                
+                expect_error(exoCount(eboost) <- "toto", 
+                        "Counts should be numeric.")
+            })
+    
+    
+    test_that("Slot is correctly modified if a valid score is given", {
+                
+                scalingFactor(eboost) <- 1
+                exogenousScalingFactor(eboost) <- 2
+                count(eboost) <- 3
+                exoCount(eboost) <- 4
+                
+                expect_equal(getScalingFactor(eboost), 1)
+                expect_equal(getExogenousScalingFactor(eboost), 2)
+                expect_equal(getCount(eboost), 3)
+                expect_equal(getExoCount(eboost), 4)
+                
+            })
+    
+    
+    test_that("The bigwig file is modified correctly", {
+                
+                bigWigFile(eboost) <- file_vec[3]
+                
+                expect_equal(getBigWigFile(eboost), file_vec[3])
+                
+            })
+}

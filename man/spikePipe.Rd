@@ -106,7 +106,12 @@ consumes much more memory and should be used with caution.
   If outputFolder is not NULL, the original bigwig files should be copied to 
 this folder before performing the analysis. This parameter was created to test
 the package with the provided files in extdata/.
+
+  On Windows operating system, this function is not available due to 
+  the Bioconductor package rtracklayer >= 1.37.6 which does not support bigWig 
+  files. This function will return null.
 }
+
 
 \value{
     Returns a spike-in normalized object with extracted binding values that can

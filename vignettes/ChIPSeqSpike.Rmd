@@ -281,7 +281,7 @@ from the corresponding ones. If in boost mode, the input subtracted values are
 stored in the dataset object and no files are written. For this latter case, 
 the method exportBigWigs can be used to output the transformed files.
 \newline
-```{r message = FALSE, warning = FALSE}
+```{r eval = FALSE, echo = TRUE}
 csds_test <- inputSubtraction(csds_test)
 ````
 
@@ -291,7 +291,7 @@ After RPM and input subtraction normalization, the RPM normalization is
 reversed in order for the data to be normalized by the exogenous scaling 
 factors.
 \newline
-```{r message = FALSE, warning = FALSE}
+```{r eval = FALSE, echo = TRUE}
 csds_test <- scaling(csds_test, reverse = TRUE)
 ````
 \newpage
@@ -299,7 +299,7 @@ csds_test <- scaling(csds_test, reverse = TRUE)
 
 Finally, exogenous scaling factors are applied to the data.
 \newline
-```{r message = FALSE, warning = FALSE}
+```{r eval = FALSE, echo = TRUE}
 csds_test <- scaling(csds_test, type = "exo")
 ````
 
@@ -316,7 +316,7 @@ package corresponding to the endogenous organism, see the
 [BSgenome](https://bioconductor.org/packages/release/bioc/html/BSgenome.html) 
 package documentation.
 \newline
-```{r message = FALSE, warning = FALSE}
+```{r eval = FALSE, echo = TRUE}
 csds_test <- extractBinding(csds_test, gff_vec, genome_name)
 ````
 
