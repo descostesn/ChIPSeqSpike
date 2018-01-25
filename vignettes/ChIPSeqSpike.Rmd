@@ -204,7 +204,9 @@ Binding scores for each experiment are stored in a GRanges object and are
 directly accessible by functions.
 \newline
 ```{r message = FALSE, warning = FALSE}
+if(.Platform$OS.type == 'windows') {
 getLoadedData(csds_testBoost[[1]])
+}
 ````
 Even if optimizing greatly the time of computing, one should know that loading 
 binding scores of all experiments is greedy in memory and should be used with 
