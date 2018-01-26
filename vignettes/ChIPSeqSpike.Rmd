@@ -90,8 +90,10 @@ dir.create("./test_chipseqspike")
 mock <- file.copy(bigwig_files, "test_chipseqspike")
 
 ## Performing spike-in normalization
-csds_test <- spikePipe(info_file_csv, bam_path, bigwig_path, gff_vec, 
-                       genome_name, outputFolder = output_folder)
+if (.Platform$OS.type != "windows") {
+    csds_test <- spikePipe(info_file_csv, bam_path, bigwig_path, gff_vec, 
+                           genome_name, outputFolder = output_folder)
+}
 ```
 
 
@@ -196,9 +198,11 @@ wish to reduce the time of computation especially when processing a lot of
 data. ChIPSeqSpike reduces such time by providing a boost mode.
 \newline
 ```{r message = FALSE, warning = FALSE}
-csds_testBoost <- spikeDataset(info_file_csv, bam_path, bigwig_path, 
-boost = TRUE)
-is(csds_testBoost)
+if (.Platform$OS.type != "windows") {
+    csds_testBoost <- spikeDataset(info_file_csv, bam_path, bigwig_path, 
+    boost = TRUE)
+    is(csds_testBoost)
+}
 ````
 Binding scores for each experiment are stored in a GRanges object and are 
 directly accessible by functions.
@@ -263,7 +267,9 @@ exogenous scaling factors (see sections [2.3.5](#RPMreversal) and
 \newline
 \newline
 ```{r message = FALSE, warning = FALSE}
-csds_test <- scaling(csds_test, outputFolder = output_folder)
+if (.Platform$OS.type != "windows") {
+    csds_test <- scaling(csds_test, outputFolder = output_folder)
+}
 ````
  In the context of this vignette, output_folder is precised since the testing 
 files were copied to a temporary 'test_chipseqspike' folder. The slots 
