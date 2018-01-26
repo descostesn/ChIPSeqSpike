@@ -139,17 +139,17 @@ bigwig_path <- system.file(c("extdata/bigwig_files"), package="ChIPSeqSpike")
 gff_vec <- system.file("extdata/test_coord.gff", package="ChIPSeqSpike")
 genome_name <- "hg19"
 
-csds <- spikeDataset(infoFile = info_file_csv, bamPath = bam_path, 
-                     bigWigPath = bigwig_path)
-
-## Copying test files to the current folder
-originalBW_vec <- as.character(getBigWigFile(csds))
-dir.create("./test_chipseqspike")
-result <- file.copy(originalBW_vec, "test_chipseqspike")
-
-csds <- estimateScalingFactors(csds)
-
 if(.Platform$OS.type != 'windows') {
+    csds <- spikeDataset(infoFile = info_file_csv, bamPath = bam_path, 
+                         bigWigPath = bigwig_path)
+
+    ## Copying test files to the current folder
+    originalBW_vec <- as.character(getBigWigFile(csds))
+    dir.create("./test_chipseqspike")
+    result <- file.copy(originalBW_vec, "test_chipseqspike")
+
+    csds <- estimateScalingFactors(csds)
+
     ## Apply RPM scaling
     csds <- scaling(csds, outputFolder = "test_chipseqspike")
 
@@ -166,9 +166,8 @@ if(.Platform$OS.type != 'windows') {
     csds <- extractBinding(csds, gff_vec, genome_name)
 
     ## Delete all files generated in this example
+    unlink("test_chipseqspike/", recursive = TRUE)
 }
-
-unlink("test_chipseqspike/", recursive = TRUE)
 }
 
 \seealso{

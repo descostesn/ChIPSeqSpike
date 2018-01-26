@@ -38,12 +38,9 @@
 
 \section{Constructor}{
   \describe{
-
-if(.Platform$OS.type != 'windows') {
     ExperimentLoaded(endogenousBamFilePath, exogenousBamFilePath, 
         bigWigFilePath, name, endoScalingFactor = 0, exoScalingFactor = 0, 
         endoNb = 0, exoNb = 0, verbose = TRUE)
-}
   }
 }
 
@@ -129,10 +126,12 @@ file_vec <- system.file("extdata",
                         "bigwig_files/H3K79me2_0-filtered.bw"),
                         package="ChIPSeqSpike")
 
-exp <- ExperimentLoaded(endogenousBamFilePath = file_vec[2], 
-                        exogenousBamFilePath = file_vec[1], 
-                        bigWigFilePath = file_vec[3], 
-                        name = "H3K79me2_0")
+if(.Platform$OS.type != 'windows') {
+    exp <- ExperimentLoaded(endogenousBamFilePath = file_vec[2], 
+                            exogenousBamFilePath = file_vec[1], 
+                            bigWigFilePath = file_vec[3], 
+                            name = "H3K79me2_0")
+}
 }
 
 \seealso{

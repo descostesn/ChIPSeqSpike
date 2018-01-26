@@ -48,18 +48,20 @@ bigwig_files <- system.file("extdata/bigwig_files",
                               "input_100-filtered.bw",
                               "input_50-filtered.bw"), package="ChIPSeqSpike")
 
-## Copying example files
-dir.create("./test_chipseqspike")
-result <- file.copy(bigwig_files, "test_chipseqspike")
+if(.Platform$OS.type != 'windows') {
 
-csds <- spikePipe(info_file_csv, bam_path, bigwig_path, gff_vec, genome_name, 
-              verbose = TRUE, outputFolder = output_folder)
+    ## Copying example files
+    dir.create("./test_chipseqspike")
+    result <- file.copy(bigwig_files, "test_chipseqspike")
 
-if(.Platform$OS.type != 'windows')
+    csds <- spikePipe(info_file_csv, bam_path, bigwig_path, gff_vec, 
+                      genome_name, verbose = TRUE, 
+                      outputFolder = output_folder)
+
     experimentList(csds[[1]]) <- getExperimentList(csds[[1]])
 
-unlink("test_chipseqspike/", recursive = TRUE)
-
+    unlink("test_chipseqspike/", recursive = TRUE)
+}
 }
 
 \seealso{
