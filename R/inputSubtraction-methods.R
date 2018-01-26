@@ -50,44 +50,45 @@ setMethod(
         
         definition = function(theObject, verbose = TRUE){
             
-            if(.Platform$OS.type == 'windows') {
-                warning("As of rtracklayer >= 1.37.6, BigWig is not supported",
-                        " on Windows.", immediate. = TRUE)
-                return()
-            }
-            
-            if(!length(grep("RPM", getBigWigFile(theObject))))
-      stop("RPM normalization must be performed before subtracting the input")
-            
-            input_bigWig_file <- getLoadedData(theObject)
-            
-            if(verbose) message("Subtracting input to experiment")
-            
-            experimentList(theObject) <- lapply(
-                    getExperimentList(theObject), function(exp, input){
-                        
-                        if(verbose)
-                            message("\t Processing ", getExpName(exp))
+            if(.Platform$OS.type != 'windows') {
+                if(!length(grep("RPM", getBigWigFile(theObject))))
+                    stop("RPM normalization must be performed before ",
+                            "subtracting the input")
+                
+                input_bigWig_file <- getLoadedData(theObject)
+                
+                if(verbose) message("Subtracting input to experiment")
+                
+                experimentList(theObject) <- lapply(
+                        getExperimentList(theObject), function(exp, input){
                             
-                        exp_bigWig_file <- getLoadedData(exp)
-                        
-                        if(!isTRUE(all.equal(levels(seqnames(exp_bigWig_file)),
-                                        levels(seqnames(input)))))
-                       stop("Chromosomes differ between input and experiment")
-                    
-                    result <- .subtractScores(exp_bigWig_file, input, verbose)
-                    
-                    loadedData(exp) <- result
-                    bigWigFile(exp) <- .modifyBigWigName(exp, "BGSub")
-                    
-                    return(exp)
-                        
-                    }, input_bigWig_file)
-            
-            return(theObject)
-            
-        }
-)
+                            if(verbose)
+                                message("\t Processing ", getExpName(exp))
+                            
+                            exp_bigWig_file <- getLoadedData(exp)
+                            
+                            seqnanamesBW <- seqnames(exp_bigWig_file)
+                            if(!isTRUE(all.equal(levels(seqnanamesBW),
+                                            levels(seqnames(input)))))
+                                stop("Chromosomes differ between input and ",
+                                        "experiment")
+                            
+                            result <- .subtractScores(exp_bigWig_file, 
+                                    input, verbose)
+                            
+                            loadedData(exp) <- result
+                            bigWigFile(exp) <- .modifyBigWigName(exp, "BGSub")
+                            
+                            return(exp)
+                            
+                        }, input_bigWig_file)
+                
+                return(theObject)
+            }else{
+                stop("As of rtracklayer >= 1.37.6, BigWig is not supported",
+                        " on Windows.")
+            }
+        })
 
 
 setMethod(
@@ -98,51 +99,52 @@ setMethod(
         
         definition = function(theObject, verbose = TRUE){
             
-   if(.Platform$OS.type == 'windows') {
-       warning("As of rtracklayer >= 1.37.6, BigWig is not supported on ",
-               "Windows.", immediate. = TRUE)
-       return()
-   }
-            
-   if(!length(grep("RPM", getBigWigFile(theObject))))
-      stop("RPM normalization must be performed before subtracting the input")
-            
-   if(verbose) message("Reading the input file")
-   input_file_path <- getBigWigFile(theObject)
-   
-   input_bigWig_file <- import(input_file_path, format="BigWig")
-   
-   if(verbose) message("Subtracting input to experiment")
-   
-   experimentList(theObject) <- lapply(
-           getExperimentList(theObject), function(exp, input){
-               
-               if(verbose){
+   if(.Platform$OS.type != 'windows') {
+       if(!length(grep("RPM", getBigWigFile(theObject))))
+           stop("RPM normalization must be performed before subtracting ",
+                   "the input")
+       
+       if(verbose) message("Reading the input file")
+       
+       input_file_path <- getBigWigFile(theObject)
+       
+       input_bigWig_file <- import(input_file_path, format="BigWig")
+       
+       if(verbose) message("Subtracting input to experiment")
+       
+       experimentList(theObject) <- lapply(
+               getExperimentList(theObject), function(exp, input){
                    
-                   message("\t Processing ", getExpName(exp))
-                   message("\t\t Reading bigWig file")
-               }
-               
-               exp_bigWig_file <- import(getBigWigFile(exp), format="BigWig")
-               
-               if(!isTRUE(all.equal(levels(seqnames(exp_bigWig_file)), 
-                               levels(seqnames(input)))))
-                   stop("Chromosomes differ between input and experiment")
-               
-               result <- .subtractScores(exp_bigWig_file, input, verbose)
-               
-               
-               output_bigWig <- .modifyBigWigName(exp, "BGSub",NULL)
-               export(result, con = output_bigWig, format="BigWig")
-               
-               bigWigFile(exp) <- output_bigWig
-               return(exp)
-               
-           }, input_bigWig_file)
-   
-   return(theObject)
-   
+                   if(verbose){
+                       
+                       message("\t Processing ", getExpName(exp))
+                       message("\t\t Reading bigWig file")
+                   }
+                   
+                   exp_bigWig_file <- import(getBigWigFile(exp), 
+                           format="BigWig")
+                   
+                   if(!isTRUE(all.equal(levels(seqnames(exp_bigWig_file)), 
+                                   levels(seqnames(input)))))
+                       stop("Chromosomes differ between input and experiment")
+                   
+                   result <- .subtractScores(exp_bigWig_file, input, verbose)
+                   
+                   
+                   output_bigWig <- .modifyBigWigName(exp, "BGSub",NULL)
+                   export(result, con = output_bigWig, format="BigWig")
+                   
+                   bigWigFile(exp) <- output_bigWig
+                   return(exp)
+                   
+               }, input_bigWig_file)
+       
+       return(theObject)
+   }else{
+       stop("As of rtracklayer >= 1.37.6, BigWig is not supported on ",
+               "Windows.")
    }
+}
 )
 
 
@@ -166,12 +168,12 @@ setMethod(
         
         definition = function(theObject, verbose = TRUE){
             
-       if(.Platform$OS.type == 'windows') {
-            warning("As of rtracklayer >= 1.37.6, BigWig is not supported on ",
-                    "Windows.", immediate. = TRUE)
-            return()
+       if(.Platform$OS.type != 'windows') {
+           .loadInputSubtractionList(theObject, verbose)
+       }else{
+           stop("As of rtracklayer >= 1.37.6, BigWig is not supported on ",
+                   "Windows.")
        }
-            .loadInputSubtractionList(theObject, verbose)
         }
 )
 
@@ -184,12 +186,11 @@ setMethod(
         
         definition = function(theObject, verbose = TRUE){
             
-            if(.Platform$OS.type == 'windows') {
-                warning("As of rtracklayer >= 1.37.6, BigWig is not supported",
-                        " on Windows.", immediate. = TRUE)
-                return()
+            if(.Platform$OS.type != 'windows') {
+                .loadInputSubtractionList(theObject, verbose)
+            }else{
+                stop("As of rtracklayer >= 1.37.6, BigWig is not supported",
+                        " on Windows.")
             }
-            
-            .loadInputSubtractionList(theObject, verbose)
         }
 )

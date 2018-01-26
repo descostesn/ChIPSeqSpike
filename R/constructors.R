@@ -57,19 +57,18 @@ spikeDataset <- function(infoFile, bamPath, bigWigPath, boost = FALSE,
             stop("The input bam and bigWig files do not correspond.")
         
         if(boost){
-            if(.Platform$OS.type == 'windows') {
-                warning("As of rtracklayer >= 1.37.6, BigWig is not ",
-                        "supported on Windows.", immediate. = TRUE)
-                return()
+            if(.Platform$OS.type != 'windows') {
+                ChIPSeqSpikeDatasetBoost(info_table$endogenousBam, 
+                        info_table$exogenousBam, 
+                        info_table$bigWigEndogenous, 
+                        unique(info_table$bigWigInput), 
+                        unique(inputBamFile), 
+                        info_table$expName,
+                        verbose)
+            }else{
+                stop("As of rtracklayer >= 1.37.6, BigWig is not ",
+                        "supported on Windows.")
             }
-            
-            ChIPSeqSpikeDatasetBoost(info_table$endogenousBam, 
-                    info_table$exogenousBam, 
-                    info_table$bigWigEndogenous, 
-                    unique(info_table$bigWigInput), 
-                    unique(inputBamFile), 
-                    info_table$expName,
-                    verbose)
         }else
             ChIPSeqSpikeDataset(info_table$endogenousBam, 
                     info_table$exogenousBam, 
@@ -85,12 +84,12 @@ spikeDataset <- function(infoFile, bamPath, bigWigPath, boost = FALSE,
                                       seq_len(length(list_dataset)))
         
         if(boost){
-            if(.Platform$OS.type == 'windows') {
-                warning("As of rtracklayer >= 1.37.6, BigWig is not ",
-                        "supported on Windows.", immediate. = TRUE)
-                return()
+            if(.Platform$OS.type != 'windows') {
+                ChIPSeqSpikeDatasetListBoost(list_dataset, verbose)
+            }else{
+                stop("As of rtracklayer >= 1.37.6, BigWig is not ",
+                        "supported on Windows.")
             }
-            ChIPSeqSpikeDatasetListBoost(list_dataset, verbose)
         }else
             ChIPSeqSpikeDatasetList(list_dataset, verbose)
     }
@@ -102,28 +101,27 @@ spikeDataset <- function(infoFile, bamPath, bigWigPath, boost = FALSE,
 
 ChIPSeqSpikeDatasetListBoost <- function(dataset_list, verbose){
     
-    if(.Platform$OS.type == 'windows') {
-        warning("As of rtracklayer >= 1.37.6, BigWig is not ",
-                "supported on Windows.", immediate. = TRUE)
-        return()
+    if(.Platform$OS.type != 'windows') {
+        ChIPSeqSpikeDatasetBoostCollection <- lapply(dataset_list, 
+                function(dataset_table){
+                    
+                    return(
+                            ChIPSeqSpikeDatasetBoost(
+                                    dataset_table[, "endogenousBam"], 
+                                    dataset_table[, "exogenousBam"], 
+                                    dataset_table[, "bigWigEndogenous"],
+                                    unique(dataset_table[, "bigWigInput"]), 
+                                    unique(dataset_table[, "inputBam"]),
+                                    dataset_table[, "expName"],
+                                    verbose = verbose))
+                })
+        
+        new("ChIPSeqSpikeDatasetListBoost", 
+                datasetList = ChIPSeqSpikeDatasetBoostCollection)
+    }else{
+        stop("As of rtracklayer >= 1.37.6, BigWig is not ",
+                "supported on Windows.")
     }
-    
-    ChIPSeqSpikeDatasetBoostCollection <- lapply(dataset_list, 
-            function(dataset_table){
-                
-                return(
-                        ChIPSeqSpikeDatasetBoost(
-                                dataset_table[, "endogenousBam"], 
-                                dataset_table[, "exogenousBam"], 
-                                dataset_table[, "bigWigEndogenous"],
-                                unique(dataset_table[, "bigWigInput"]), 
-                                unique(dataset_table[, "inputBam"]),
-                                dataset_table[, "expName"],
-                                verbose = verbose))
-            })
-    
-    new("ChIPSeqSpikeDatasetListBoost", 
-            datasetList = ChIPSeqSpikeDatasetBoostCollection)
 }
 
 
@@ -228,35 +226,34 @@ ChIPSeqSpikeDatasetBoost <- function(endogenousBam_vec, exogenousBam_vec,
         inputSF = 0, inputNb = 0, SetArrayList = list(), 
         matBindingList = list(), verbose = TRUE){
     
-    if(.Platform$OS.type == 'windows') {
-        warning("As of rtracklayer >= 1.37.6, BigWig is not supported on ",
-                "Windows.", immediate. = TRUE)
-        return()
-    }
-    
-    .verifyDataset(endogenousBam_vec, exogenousBam_vec, 
-            bigWigFile_endogenous_vec, expnames)
-    
-    if(verbose)
-        message("Reading input bigWig file.")
-    
-    loaded_input_bigWig <- import(inputBigWigFile, format="BigWig")
-    
-    loaded_exp_list <- mapply(function(endoB, exoB, target, name){
-                
-                return(ExperimentLoaded(endoB, exoB, target, name, 
-                                verbose = verbose))
-                
-            }, endogenousBam_vec, exogenousBam_vec, 
-            bigWigFile_endogenous_vec, expnames)
-    
-    names(loaded_exp_list) <- expnames
+    if(.Platform$OS.type != 'windows') {
+        .verifyDataset(endogenousBam_vec, exogenousBam_vec, 
+                bigWigFile_endogenous_vec, expnames)
         
-    new("ChIPSeqSpikeDatasetBoost", 
-            ChIPSeqSpikeCore(inputBamFile, inputBigWigFile, inputSF, inputNb, 
-                    SetArrayList, matBindingList),
-            experimentListLoaded = loaded_exp_list,
-            inputBigWigLoaded = loaded_input_bigWig)
+        if(verbose)
+            message("Reading input bigWig file.")
+        
+        loaded_input_bigWig <- import(inputBigWigFile, format="BigWig")
+        
+        loaded_exp_list <- mapply(function(endoB, exoB, target, name){
+                    
+                    return(ExperimentLoaded(endoB, exoB, target, name, 
+                                    verbose = verbose))
+                    
+                }, endogenousBam_vec, exogenousBam_vec, 
+                bigWigFile_endogenous_vec, expnames)
+        
+        names(loaded_exp_list) <- expnames
+        
+        new("ChIPSeqSpikeDatasetBoost", 
+                ChIPSeqSpikeCore(inputBamFile, inputBigWigFile, inputSF, inputNb, 
+                        SetArrayList, matBindingList),
+                experimentListLoaded = loaded_exp_list,
+                inputBigWigLoaded = loaded_input_bigWig)
+    }else{
+        stop("As of rtracklayer >= 1.37.6, BigWig is not supported on ",
+                "Windows.")
+    }
 }
 
 
@@ -308,20 +305,19 @@ ExperimentLoaded <- function(endogenousBamFilePath, exogenousBamFilePath,
         bigWigFilePath, name, endoScalingFactor = 0, exoScalingFactor = 0, 
         endoNb = 0, exoNb = 0, verbose = TRUE){
     
-    if(.Platform$OS.type == 'windows') {
-        warning("As of rtracklayer >= 1.37.6, BigWig is not ",
-                "supported on Windows.", immediate. = TRUE)
-        return()
+    if(.Platform$OS.type != 'windows') {
+        if(verbose)
+            message("Reading ", name)
+        
+        loaded_bigWig <- import(bigWigFilePath, format="BigWig")
+        
+        new("ExperimentLoaded",
+                Experiment(endogenousBamFilePath, exogenousBamFilePath, 
+                     bigWigFilePath, name, endoScalingFactor, exoScalingFactor,
+                        endoNb, exoNb),
+                loadedBigWigFile = loaded_bigWig)
+    }else{
+        stop("As of rtracklayer >= 1.37.6, BigWig is not ",
+                "supported on Windows.")
     }
-    
-    if(verbose)
-        message("Reading ", name)
-    
-    loaded_bigWig <- import(bigWigFilePath, format="BigWig")
-    
-    new("ExperimentLoaded",
-            Experiment(endogenousBamFilePath, exogenousBamFilePath, 
-                    bigWigFilePath, name, endoScalingFactor, exoScalingFactor, 
-                    endoNb, exoNb),
-            loadedBigWigFile = loaded_bigWig)
 }

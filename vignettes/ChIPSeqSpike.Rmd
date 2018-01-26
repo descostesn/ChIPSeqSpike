@@ -203,8 +203,10 @@ is(csds_testBoost)
 Binding scores for each experiment are stored in a GRanges object and are 
 directly accessible by functions.
 \newline
-```{r eval = FALSE, echo = TRUE}
-getLoadedData(csds_testBoost[[1]])
+```{r message = FALSE, warning = FALSE}
+if (.Platform$OS.type != "windows") {
+    getLoadedData(csds_testBoost[[1]])
+}
 ````
 Even if optimizing greatly the time of computing, one should know that loading 
 binding scores of all experiments is greedy in memory and should be used with 
@@ -281,8 +283,10 @@ from the corresponding ones. If in boost mode, the input subtracted values are
 stored in the dataset object and no files are written. For this latter case, 
 the method exportBigWigs can be used to output the transformed files.
 \newline
-```{r eval = FALSE, echo = TRUE}
-csds_test <- inputSubtraction(csds_test)
+```{r message = FALSE, warning = FALSE}
+if (.Platform$OS.type != "windows") {
+    csds_test <- inputSubtraction(csds_test)
+}
 ````
 
 ### RPM scaling reversal {#RPMreversal}
@@ -291,16 +295,20 @@ After RPM and input subtraction normalization, the RPM normalization is
 reversed in order for the data to be normalized by the exogenous scaling 
 factors.
 \newline
-```{r eval = FALSE, echo = TRUE}
-csds_test <- scaling(csds_test, reverse = TRUE)
+```{r message = FALSE, warning = FALSE}
+if (.Platform$OS.type != "windows") {
+    csds_test <- scaling(csds_test, reverse = TRUE)
+}
 ````
 \newpage
 ### Exogenous scaling {#exoscaling}
 
 Finally, exogenous scaling factors are applied to the data.
 \newline
-```{r eval = FALSE, echo = TRUE}
-csds_test <- scaling(csds_test, type = "exo")
+```{r message = FALSE, warning = FALSE}
+if (.Platform$OS.type != "windows") {
+    csds_test <- scaling(csds_test, type = "exo")
+}
 ````
 
 ### Extract binding values
@@ -316,8 +324,10 @@ package corresponding to the endogenous organism, see the
 [BSgenome](https://bioconductor.org/packages/release/bioc/html/BSgenome.html) 
 package documentation.
 \newline
-```{r eval = FALSE, echo = TRUE}
-csds_test <- extractBinding(csds_test, gff_vec, genome_name)
+```{r message = FALSE, warning = FALSE}
+if (.Platform$OS.type != "windows") {
+    csds_test <- extractBinding(csds_test, gff_vec, genome_name)
+}
 ````
 
 # Plotting data

@@ -123,38 +123,40 @@ setMethod(
         definition = function(theObject, reverse = FALSE, type = "endo",
                 verbose = TRUE, outputFolder = NULL){
             
-            if(.Platform$OS.type == 'windows') {
-                warning("As of rtracklayer >= 1.37.6, BigWig is not ",
-                        "supported on Windows.", immediate. = TRUE)
-                return()
-            }
-            
-            .validateParameters(type, reverse, outputFolder)
-            
-            if(!reverse && isTRUE(all.equal(type, "endo"))){
-                if(verbose) message("Processing input")
+            if(.Platform$OS.type != 'windows') {
+                .validateParameters(type, reverse, outputFolder)
                 
-                bigWigFile(theObject) <- 
-                        .computeScaling(theObject, outputFolder, verbose, 
-                                reverse, type)
+                if(!reverse && isTRUE(all.equal(type, "endo"))){
+                    if(verbose) message("Processing input")
+                    
+                    bigWigFile(theObject) <- 
+                            .computeScaling(theObject, outputFolder, verbose, 
+                                    reverse, type)
+                }
+                
+                experimentList(theObject) <-
+                        lapply(getExperimentList(theObject), 
+                                function(experiment){
+                                    .validateParameters(type, reverse, 
+                                            outputFolder, 
+                                            getBigWigFile(experiment), 
+                                            firstPart = FALSE)
+                                    if(verbose)
+                                        message("Processing ", 
+                                                getExpName(experiment))
+                                    
+                                    bigWigFile(experiment) <- 
+                                            .computeScaling(experiment,
+                                                    outputFolder, verbose, 
+                                                    reverse, type)
+                                    
+                                    return(experiment)
+                                })
+                return(theObject)
+            }else{
+                stop("As of rtracklayer >= 1.37.6, BigWig is not ",
+                        "supported on Windows.")
             }
-            
-            
-            experimentList(theObject) <- 
-                    lapply(getExperimentList(theObject), function(experiment){
-                                
-                   .validateParameters(type, reverse, outputFolder, 
-                           getBigWigFile(experiment), firstPart = FALSE)
-              if(verbose)
-                  message("Processing ", getExpName(experiment))
-                                
-              bigWigFile(experiment) <- .computeScaling(experiment, 
-                      outputFolder, verbose, reverse, type)
-              
-              return(experiment)
-              })
-            
-            return(theObject)
         })
 
 
@@ -167,50 +169,53 @@ setMethod(
         definition = function(theObject, reverse = FALSE, type = "endo",
                 verbose = TRUE, outputFolder = NULL){
             
-            if(.Platform$OS.type == 'windows') {
-                warning("As of rtracklayer >= 1.37.6, BigWig is not ",
-                        "supported on Windows.", immediate. = TRUE)
-                return()
-            }
-            
-            .validateParameters(type, reverse)
-            
-            if(!reverse && isTRUE(all.equal(type, "endo"))){
-                if(verbose) message("Processing input")
+            if(.Platform$OS.type != 'windows') {
+                .validateParameters(type, reverse)
                 
-                loadedData(theObject) <- .computeScalingBoost(theObject, 
-                        verbose, reverse, type)
+                if(!reverse && isTRUE(all.equal(type, "endo"))){
+                    if(verbose) message("Processing input")
+                    
+                    loadedData(theObject) <- .computeScalingBoost(theObject, 
+                            verbose, reverse, type)
+                    
+                    bigWigFile(theObject) <- .modifyBigWigName(theObject, 
+                            "RPM", outputFolder)
+                }
                 
-                bigWigFile(theObject) <- .modifyBigWigName(theObject, "RPM", 
-                                                            outputFolder)
+                experimentList(theObject) <- 
+                        lapply(getExperimentList(theObject), 
+                                function(experiment){
+                                    
+                                    .validateParameters(type, reverse, 
+                                            outputFolder,
+                                            getBigWigFile(experiment),
+                                            firstPart = FALSE)
+                                    
+                                    if(verbose)
+                                        message("Processing ", 
+                                                getExpName(experiment))
+                                    
+                                    loadedData(experiment) <- 
+                                            .computeScalingBoost(experiment,
+                                                    verbose, reverse, type)
+                                    
+                                    bigWigFile(experiment) <- 
+                                            .modifyBigWigName(experiment, 
+                                                    if(reverse)
+                                                                "reverted"
+                                            else{
+                                                if(isTRUE(all.equal(type,
+                                                                "endo")))
+                                                    "RPM"
+                                                else
+                                                    "spiked"}, outputFolder)
+                                    return(experiment)
+                                })
+                return(theObject)
+            }else{
+                stop("As of rtracklayer >= 1.37.6, BigWig is not ",
+                        "supported on Windows.")
             }
-            
-            
-            experimentList(theObject) <- 
-                  lapply(getExperimentList(theObject), function(experiment){
-                                
-                     .validateParameters(type, reverse, outputFolder,
-                             getBigWigFile(experiment), firstPart = FALSE)
-                                
-                             if(verbose)
-                                message("Processing ", getExpName(experiment))
-                                
-                             loadedData(experiment) <- .computeScalingBoost(
-                                     experiment, verbose, reverse, type)
-                             
-                             bigWigFile(experiment) <- 
-                                     .modifyBigWigName(experiment, 
-                                     if(reverse) "reverted" else{
-                                                 
-                                            if(isTRUE(all.equal(type, "endo")))
-                                                "RPM" 
-                                            else
-                                                "spiked"
-                                             }, outputFolder)
-                                return(experiment)
-                            })
-            
-            return(theObject)
         })
 
 
@@ -235,14 +240,13 @@ setMethod(
         definition = function(theObject, reverse = FALSE, type = "endo",
                 verbose = TRUE, outputFolder = NULL){
             
-            if(.Platform$OS.type == 'windows') {
-                warning("As of rtracklayer >= 1.37.6, BigWig is not ",
-                        "supported on Windows.", immediate. = TRUE)
-                return()
+            if(.Platform$OS.type != 'windows') {
+                .loadScalingOnList(theObject, reverse, type, verbose, 
+                        outputFolder)
+            }else{
+                stop("As of rtracklayer >= 1.37.6, BigWig is not ",
+                        "supported on Windows.")
             }
-            
-            .loadScalingOnList(theObject, reverse, type, verbose, 
-                    outputFolder)
         }
 )
 
@@ -256,13 +260,12 @@ setMethod(
         definition = function(theObject, reverse = FALSE, type = "endo",
                 verbose = TRUE, outputFolder = NULL){
             
-            if(.Platform$OS.type == 'windows') {
-                warning("As of rtracklayer >= 1.37.6, BigWig is not ",
-                        "supported on Windows.", immediate. = TRUE)
-                return()
+            if(.Platform$OS.type != 'windows') {
+                .loadScalingOnList(theObject, reverse, type, verbose, 
+                        outputFolder)
+            }else{
+                stop("As of rtracklayer >= 1.37.6, BigWig is not ",
+                        "supported on Windows.")
             }
-            
-            .loadScalingOnList(theObject, reverse, type, verbose, 
-                    outputFolder)
         }
 )

@@ -1,3 +1,7 @@
+########## version 0.99.17:
+
+For Windows, change warning/return messages to stop messages
+
 ########## version 0.99.9:
 
 Add return() instructions if the used operating system is Windows.
