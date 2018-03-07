@@ -1,3 +1,9 @@
+########## version 0.99.21:
+
+Add error messages in the input subtraction function. If the binning is,
+different between the input dna and experiment bigwigs, an error message 
+is shown.
+
 ########## version 0.99.17:
 
 For Windows, change warning/return messages to stop messages

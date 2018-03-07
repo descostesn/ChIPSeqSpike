@@ -1,8 +1,8 @@
 Package: ChIPSeqSpike
 Type: Package
 Title: ChIP-Seq data scaling according to spike-in control 
-Version: 0.99.20
-Date: 2018-01-19
+Version: 0.99.21
+Date: 2018-03-07
 Author: Nicolas Descostes
 Maintainer: Nicolas Descostes <nicolas.descostes@gmail.com>
 Description: Chromatin Immuno-Precipitation followed by Sequencing (ChIP-Seq) 
