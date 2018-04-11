@@ -5,6 +5,7 @@ author:
   affiliation: Howard Hughes Medical Institute - New York University
   email: nicolas.descostes@gmail.com
 package: ChIPSeqSpike
+abstract: Vignette update - 2018-01-26
 output: 
   BiocStyle::pdf_document
 vignette: >

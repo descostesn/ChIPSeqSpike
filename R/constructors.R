@@ -1,6 +1,6 @@
 ## Global variable definitions
 
-globalVariables(c("inputBamFile"))
+#globalVariables(c("inputBamFile"))
 
 
 ## Main function called to create the different objects according to an info
@@ -62,7 +62,7 @@ spikeDataset <- function(infoFile, bamPath, bigWigPath, boost = FALSE,
                         info_table$exogenousBam, 
                         info_table$bigWigEndogenous, 
                         unique(info_table$bigWigInput), 
-                        unique(inputBamFile), 
+                        unique(info_table$inputBam), 
                         info_table$expName,
                         verbose)
             }else{
@@ -74,7 +74,7 @@ spikeDataset <- function(infoFile, bamPath, bigWigPath, boost = FALSE,
                     info_table$exogenousBam, 
                     info_table$bigWigEndogenous, 
                     unique(info_table$bigWigInput), 
-                    unique(inputBamFile), 
+                    unique(info_table$inputBam), 
                     info_table$expName)
     }else{
         

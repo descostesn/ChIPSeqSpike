@@ -1,3 +1,8 @@
+########## version 0.99.22:
+
+Corrected bug in object constructor in case only one input DNA experiment is 
+given.
+
 ########## version 0.99.21:
 
 Add error messages in the input subtraction function. If the binning is,
