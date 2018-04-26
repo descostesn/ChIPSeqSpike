@@ -1,3 +1,7 @@
+########## version 0.99.23:
+
+- Add .fastq and fasta files for pre-processing
+
 ########## version 0.99.22:
 
 Corrected bug in object constructor in case only one input DNA experiment is 
