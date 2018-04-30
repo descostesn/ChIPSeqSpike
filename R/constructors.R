@@ -7,8 +7,7 @@
 ## file provided as parameter.
 
 
-spikeDataset <- function(infoFile, bamPath, bigWigPath, boost = FALSE, 
-        verbose = TRUE){
+.readInfoFile <- function(infoFile){
     
     if(isTRUE(all.equal(file_ext(infoFile), "csv"))){
         info_table <- read.csv(infoFile, stringsAsFactors = FALSE)
@@ -18,18 +17,33 @@ spikeDataset <- function(infoFile, bamPath, bigWigPath, boost = FALSE,
     }else
         stop("The info file should be in csv or txt format.")
     
-    if(!(isTRUE(all.equal(ncol(info_table), 6)) && 
+    return(info_table)
+}
+
+
+
+.checkInfoFile <- function(info_table, expected_nb_col, colnames_vec){
+    
+    if(!(isTRUE(all.equal(ncol(info_table), expected_nb_col)) && 
                 isTRUE(all.equal(colnames(info_table), 
-                                c("expName", "endogenousBam", "exogenousBam", 
-                                        "inputBam", "bigWigEndogenous", 
-                                        "bigWigInput")))))
+                                colnames_vec))))
         stop("Columns are missing in your info file or one column has the ",
                 "wrong name. Your file should contain the following column ",
-                "names: expName, endogenousBam, exogenousBam, inputBam, ",
-                "bigWigEndogenous and bigWigInput")
+                "names: ", paste(colnames_vec, collapse=","))
     
     if(isTRUE(all.equal(nrow(info_table), 0)))
         stop("File is empty.")
+}
+
+
+spikeDataset <- function(infoFile, bamPath, bigWigPath, boost = FALSE, 
+        verbose = TRUE){
+    
+    info_table <- .readInfoFile(infoFile)
+    colnames_vec <- c("expName", "endogenousBam", "exogenousBam", "inputBam",
+            "bigWigEndogenous", "bigWigInput")
+    .checkInfoFile(info_table, 6, colnames_vec)
+    
     
     ## Adding paths to files
     

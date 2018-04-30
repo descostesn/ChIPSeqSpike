@@ -1,5 +1,6 @@
 ########## version 0.99.23:
 
+- make code more compact in constructors.R
 - Add .fastq and fasta files for pre-processing
 
 ########## version 0.99.22:
