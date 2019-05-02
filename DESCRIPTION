@@ -1,7 +1,7 @@
 Package: ChIPSeqSpike
 Type: Package
 Title: ChIP-Seq data scaling according to spike-in control 
-Version: 1.4.0
+Version: 1.5.0
 Date: 2018-04-11
 Author: Nicolas Descostes
 Maintainer: Nicolas Descostes <nicolas.descostes@gmail.com>
