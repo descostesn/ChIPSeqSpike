@@ -15,7 +15,8 @@
         info_table <- read.table(infoFile, header = TRUE, sep = "\t", 
                 stringsAsFactors = FALSE)
     }else
-        stop("The info file should be in csv or txt format.")
+        stop("The info file parameter should contain a path to a csv or txt ", 
+				"file.")
     
     return(info_table)
 }
