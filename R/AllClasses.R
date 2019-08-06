@@ -190,7 +190,7 @@ Experiment <- setClass(
     extension <- strsplit(basename(value), "\\.")[[1]][2]
     
     if(!identical(extension, "bw"))
-        stop("Wig files should be in bigWig format.")
+        stop("Wig files should be in bigWig format with the extension 'bw'.")
 }
 
 .validatePlotSetArrayList <- function(value){
