@@ -9,35 +9,92 @@
     
     for(chrom in chrom_vec){
         
-        scores_input <- score(input[which(chrom_input == 
-                                        chrom)])
-        scores_exp <- score(exp_bigWig_file[which(chrom_exp 
-                                        == chrom)])
-        ## If the number of scores differs, correct length
-        if(!isTRUE(all.equal(length(scores_input), 
-                        length(scores_exp)))){
-            
-            maxL <- max(length(scores_input), 
-                    length(scores_exp))
-            
-            ## The experiment scores are shorter than the input
-            if(length(scores_input) > length(scores_exp))
-            {
-                scores_input <- scores_input[-which(
-                                !(input[which(chrom_input == chrom)] %over% 
-                                            exp_bigWig_file[which(chrom_exp 
-                                                                    == chrom)]
-                                            ))]
-            }else{
-                length(scores_input) <- maxL
-                scores_input[is.na(scores_input)] <- 0
-            }
-        }
-        
-        result_scores <- scores_exp - scores_input
-        
-        score(exp_bigWig_file[which(chrom_exp == chrom)]
-        )[which(scores_exp >= 0)] <- result_scores
+		if(verbose) message("\t\t\t processing chrom: ", chrom)
+		
+		gr_exp_chrom <- exp_bigWig_file[which(chrom_exp == chrom)]
+		gr_input_chrom <- input[which(chrom_input == chrom)]
+		
+		all_scores_input <- score()
+		all_scores_exp <- score(gr_exp_chrom)
+		all_start_input <- start(gr_input_chrom)
+		all_start_exp <- start(gr_exp_chrom)
+		all_end_input <- end(gr_input_chrom)
+		all_end_exp <- end(gr_exp_chrom)
+		all_strand_input <- as.character(strand(gr_input_chrom))
+		all_strand_exp <- as.character(strand(gr_exp_chrom))
+		all_score_input <- score(gr_input_chrom)
+		all_score_exp <- score(gr_exp_chrom)
+		
+		
+		## From the overlap below, several ranges of input can be overlapping 
+		## an experiment range. The logic is to subtract each input score to
+		## the same exp score and build a new grange for exp including the
+		## sub-intervals
+		
+		result_overlap <- findOverlaps(gr_exp_chrom, gr_input_chrom)
+		
+		input_index_list <- split(subjectHits(result_overlap), 
+				factor(queryHits(result_overlap)))
+		
+		exp_index_list <- as.list(unique(queryHits(result_overlap)))
+		
+		if(!isTRUE(all.equal(length(input_index_list), length(exp_index_list))))
+			stop("This should not happen during input subtraction, contact ",
+					"the developper.")
+		
+		length_vec <- unlist(lapply(input_index_list, length))
+		more_than_one_nb <- sum(length_vec[which(length_vec > 1)])
+		new_exp_granges <- vector(mode="list", length = more_than_one_nb)
+		
+		!! To optimize !!!!!!!!!!!!!!
+		
+		start_time <- Sys.time()
+		#for(i in seq_len(length(exp_index_list))){
+		for(i in seq_len(10)){	
+			input_index_vec <- input_index_list[[i]]
+			exp_index <- exp_index_list[[i]]
+			input_index_length <- length(input_index_vec)
+			
+			if(input_index_length > 1){
+				
+				new_exp_scores <- all_scores_exp[exp_index]-
+						all_scores_exp[input_index_vec]
+				
+				new_exp_start <- pmax(rep(all_start_exp[exp_index], 
+								input_index_length), 
+						all_start_input[input_index_vec])
+				
+				new_exp_end <- pmin(rep(all_end_exp[exp_index],
+								input_index_length),
+						all_end_input[input_index_vec])
+				
+				new_exp_chrom <- rep(chrom, input_index_length)
+				new_exp_strand <- rep(all_strand_exp[exp_index], 
+						input_index_length)
+				
+				new_exp_granges[[exp_index]] <- GRanges(
+						seqnames = new_exp_chrom,
+						ranges = IRanges(start = new_exp_start,
+								end = new_exp_end),
+						strand = new_exp_strand,
+						score = new_exp_scores)
+			}else{
+				new_exp_granges[[exp_index]] <- gr_exp_chrom[exp_index]
+				score(gr_exp_chrom[exp_index]) <- all_score_exp[exp_index] -
+						all_score_input[input_index_vec]
+			}
+		}
+		end_time <- Sys.time()
+		end_time - start_time
+		
+#		scores_input <- unlist(lapply(input_index_list, 
+#						function(index_vec) 
+#							return(max(all_scores_input[index_vec]))))
+#		scores_exp <- score(exp_bigWig_file[which(chrom_exp == chrom)])
+#		
+#		result_scores <- scores_exp - scores_input
+#		score(exp_bigWig_file[which(chrom_exp == chrom)]) <- result_scores
+		
     }
     
     return(exp_bigWig_file)
